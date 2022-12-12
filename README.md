@@ -1,4 +1,4 @@
-#Project-1: Trivia Game using Open Trivia DB: https://opentdb.com/
+#Project-1: Trivia Game using Open Trivia DB: https://opentdb.com/ and Deck of Cards: https://www.deckofcardsapi.com/
 
 ##Overview: jQuery, JavaScript, HTML, CSS, Bootstrap, Open Trivia DB API
 

@@ -20,6 +20,7 @@ $(document).ready(function () {
     let dealerCards = [];
     let backOfCard =
       "https://cdn.pixabay.com/photo/2012/05/07/18/52/card-game-48980_640.png";
+    let playerCardsTotal = 0;
 
     let dealerCard2 = ""; //this is the card that is face down
 
@@ -55,11 +56,27 @@ $(document).ready(function () {
         }
       );
     }
+    function updatePlayerCardsTotal(playerCard) {
+      console.log(playerCard.value);
+      if (playerCard.value === "ACE") {
+        playerCardsTotal += 11;
+      } else if (
+        playerCard.value === "KING" ||
+        playerCard.value === "QUEEN" ||
+        playerCard.value === "JACK"
+      ) {
+        playerCardsTotal += 10;
+      } else {
+        playerCardsTotal += parseInt(playerCard.value);
+      }
+    }
 
     function displayCards() {
       let playerCard1 = playerCards[0].image;
       let playerCard2 = playerCards[1].image;
       let dealerCard1 = dealerCards[0].image;
+
+      //update playerCardsTotal
 
       //put dealerCard2 image into local storage
       localStorage.setItem("dealerCard2image", dealerCards[1].image);
@@ -72,6 +89,15 @@ $(document).ready(function () {
       $("#playerCard2").attr("src", playerCard2);
       $("#dealerCard1").attr("src", dealerCard1);
       $("#dealerCard2").attr("src", backOfCard);
+
+      updatePlayerCardsTotal(playerCards[0]);
+      updatePlayerCardsTotal(playerCards[1]);
+      console.log("playerCardsTotal", playerCardsTotal);
+      //update playerCardsTotal in HTML
+      $("#player-cards-total").html(
+        `Player's Cards Total: ${playerCardsTotal}`
+      );
+      // $("player-cards-total").innerHTML(playerCardsTotal);
       //dynamically resi
       //   $("#dealerCard2").attr("src", dealerCard2);
 
@@ -81,6 +107,7 @@ $(document).ready(function () {
       $("#dealerCard2").css("display", "block");
 
       //   $("#dealerCard2").css("visibility", "hidden");
+      //count up the value of the playersCards face cards each count as 10, aces 11 or 1, and 2 through 9 their values
     }
     getDeck();
   });
@@ -88,8 +115,6 @@ $(document).ready(function () {
 
 $(document).ready(function (playerCards) {
   $("#hit").click(function () {
-    //add another card to the player's hand use deckID and API
-    //get the deckId from local storage
     let deckId = localStorage.getItem("deckId");
 
     console.log("hit function deckId", deckId);
@@ -101,9 +126,12 @@ $(document).ready(function (playerCards) {
         console.log("hit card data", data);
         console.log("playerCards", playerCards);
         let playerCard3 = data.cards[0].image;
-        // data.cards.slice(0, 2).image
+        let playerCard3Value = data.cards[0];
+        updatePlayerCardsTotal(playerCard3Value);
         $("#playerCard3").attr("src", playerCard3);
         $("#playerCard3").css("display", "block");
+
+        console.log("playerCard3Value", playerCard3Value[0]);
       },
       (error) => {
         console.log(error);
@@ -122,3 +150,6 @@ $(document).ready(function (playerCards) {
     //if the player has not busted, display a message that the player has not busted
   });
 });
+
+//count card total function
+//function that updates playerCardsTotal with playerCards parameter

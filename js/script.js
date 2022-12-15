@@ -2,10 +2,19 @@
 
 //import images from "./images/*.svg";
 
+//hide the hit, double and stand buttons until the player clicks the start button
+$("#hit").hide();
+$("#double").hide();
+$("#stand").hide();
+
 $(document).ready(function () {
   $("#start").click(function () {
     console.log("start button clicked");
     $("#start").css("display", "none");
+    $("#hit").show();
+    $("#double").show();
+    $("#stand").show();
+
     let deckId = "";
     let playerCards = [];
     let dealerCards = [];
@@ -48,10 +57,14 @@ $(document).ready(function () {
     }
 
     function displayCards() {
-      var playerCard1 = playerCards[0].image;
-      var playerCard2 = playerCards[1].image;
-      var dealerCard1 = dealerCards[0].image;
-      var dealerCard2 = dealerCards[1].image;
+      let playerCard1 = playerCards[0].image;
+      let playerCard2 = playerCards[1].image;
+      let dealerCard1 = dealerCards[0].image;
+
+      //put dealerCard2 image into local storage
+      localStorage.setItem("dealerCard2image", dealerCards[1].image);
+
+      let dealerCard2Storage = dealerCards[1].image;
 
       //resize backOfCard to have the same dimensions as the other cards
 

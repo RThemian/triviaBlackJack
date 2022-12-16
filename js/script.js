@@ -110,7 +110,8 @@ function updatePlayerTotal() {
     );
     //show the dealer's second card
     $("#dealerCard2").attr("src", localStorage.getItem("dealerCard2image"));
-
+    bet = 0;
+    $("#bet").html(`Bet: $${bet}`);
     //empty the player's hand and the dealer's hand
     //disable the hit, double and stand buttons
     $("#hit").attr("disabled", true);
@@ -167,6 +168,14 @@ $("#deal").click(function () {
   if (bet === 0) {
     alert("Please place a bet before you play");
     return;
+  } else if (bet > balance) {
+    alert("You don't have enough money to place that bet");
+    return;
+  }
+  //bet is not a number
+  else if (isNaN(bet)) {
+    alert("Please enter a number");
+    return;
   } else {
     // console.log("bet", bet);
     // console.log("playerMoney", playerMoney);
@@ -182,6 +191,15 @@ $("#deal").click(function () {
   getDeck();
 });
 // });
+$("#stand").click(function () {
+  //show the dealer's second card
+  $("#dealerCard2").attr("src", localStorage.getItem("dealerCard2image"));
+  //disable the hit, double and stand buttons
+  $("#hit").attr("disabled", true);
+  $("#double").attr("disabled", true);
+  $("#stand").attr("disabled", true);
+  dealerLogic();
+});
 
 // $(document).ready(function (playerCards) {
 $("#hit").click(function () {

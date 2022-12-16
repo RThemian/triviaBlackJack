@@ -2,10 +2,14 @@
 
 //import images from "./images/*.svg";
 
-//hide the hit, double and stand buttons until the player clicks the start button
+//hide the hit, double and stand buttons until the player clicks the deal button
 $("#hit").hide();
 $("#double").hide();
 $("#stand").hide();
+let balance = 1000;
+let bet = 0;
+$("#balance").html(`Balance: $${balance}`);
+$("#bet").html(`Bet: $${bet}`);
 
 let deckId = "";
 let playerCards = [];
@@ -88,9 +92,6 @@ function displayCards() {
   // console.log("playerCardsTotal", playerCardsTotal);
   //update playerCardsTotal in HTML
   updatePlayerTotal();
-  // $("player-cards-total").innerHTML(playerCardsTotal);
-  //dynamically resi
-  //   $("#dealerCard2").attr("src", dealerCard2);
 
   $("#playerCard1").css("display", "block");
   $("#playerCard2").css("display", "block");
@@ -107,17 +108,73 @@ function updatePlayerTotal() {
     $("#player-cards-total").html(
       `Player's Cards Total: ${playerCardsTotal} - BUSTED!`
     );
-    //reload the page
+    //show the dealer's second card
+    $("#dealerCard2").attr("src", localStorage.getItem("dealerCard2image"));
+
+    //empty the player's hand and the dealer's hand
+    //disable the hit, double and stand buttons
+    $("#hit").attr("disabled", true);
+    $("#double").attr("disabled", true);
+    $("#stand").attr("disabled", true);
+
     setTimeout(function () {
-      location.reload();
+      //disable the hit, double and stand buttons
+
+      $("#playerCard1").attr("src", "");
+      $("#playerCard2").attr("src", "");
+      $("#playerCard3").attr("src", "");
+      $("#playerCard4").attr("src", "");
+      $("#playerCard5").attr("src", "");
+
+      $("#dealerCard1").attr("src", "");
+      $("#dealerCard2").attr("src", "");
+      $("#dealerCard3").attr("src", "");
+      $("#dealerCard4").attr("src", "");
+      $("#dealerCard5").attr("src", "");
+      //Player's Cards Total: 0
+
+      $("#hit").attr("disabled", false);
+      $("#double").attr("disabled", false);
+      $("#stand").attr("disabled", false);
+      $("#hit").hide();
+      $("#double").hide();
+      $("#stand").hide();
+      //change the player's cards total to 0
+      playerCardsTotal = 0;
+      $("#player-cards-total").html(
+        `Player's Cards Total: ${playerCardsTotal}`
+      );
+      //display the deal button
+      $("#deal").show();
     }, 3000);
   }
 }
 
+//on click  set bet up to the available balance
+$("#bet").click(function () {
+  //change the value of bet and display it in the bet div
+  //prompt player to enter a bet
+  bet = prompt("How much would you like to bet?");
+  $("#bet").html(`Bet: $${bet}`);
+  //reduce the balance by the bet amount
+  balance -= bet;
+  //display the balance
+  $("#balance").html(`Balance: $${balance}`);
+});
+
 // $(document).ready(function () {
-$("#start").click(function () {
-  // console.log("start button clicked");
-  $("#start").css("display", "none");
+$("#deal").click(function () {
+  if (bet === 0) {
+    alert("Please place a bet before you play");
+    return;
+  } else {
+    // console.log("bet", bet);
+    // console.log("playerMoney", playerMoney);
+    balance -= bet;
+    $("#bet").html(`Bet: $${bet}`);
+  }
+
+  $("#deal").css("display", "none");
   $("#hit").show();
   $("#double").show();
   $("#stand").show();
@@ -146,7 +203,7 @@ $("#hit").click(function () {
       // console.log("playerCard3Value", playerCard3Value[0]);
     },
     (error) => {
-      // console.log(error);
+      console.log(error);
     }
   );
 

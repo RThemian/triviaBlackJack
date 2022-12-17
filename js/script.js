@@ -17,6 +17,7 @@ let dealerCards = [];
 let backOfCard =
   "https://cdn.pixabay.com/photo/2012/05/07/18/52/card-game-48980_640.png";
 let playerCardsTotal = 0;
+let dealerCardsTotal = 0;
 
 let dealerCard2 = ""; //this is the card that is face down
 
@@ -45,6 +46,8 @@ function getCards() {
       // console.log("all card data", data);
       playerCards = data.cards.slice(0, 2);
       dealerCards = data.cards.slice(2, 4);
+      //add up the value of the dealers two cards
+      dealerCardsTotal = updateCardsTotal(dealerCards, dealerCardsTotal);
       displayCards();
     },
     (error) => {
@@ -52,20 +55,23 @@ function getCards() {
     }
   );
 }
-function updatePlayerCardsTotal(playerCard) {
-  console.log("updatePlayerCardsTotal: 52", playerCard.value);
-  if (playerCard.value === "ACE") {
-    playerCardsTotal += 11;
-  } else if (
-    playerCard.value === "KING" ||
-    playerCard.value === "QUEEN" ||
-    playerCard.value === "JACK"
-  ) {
-    playerCardsTotal += 10;
-  } else {
-    console.log("updatePlayerCardsTotal: 62", playerCard.value);
-    playerCardsTotal += parseInt(playerCard.value);
+//create a function that will add up the value of the player's or dealer's cards
+
+function updateCardsTotal(cards, total) {
+  for (let i = 0; i < cards.length; i++) {
+    if (cards[i].value === "ACE") {
+      total += 11;
+    } else if (
+      cards[i].value === "KING" ||
+      cards[i].value === "QUEEN" ||
+      cards[i].value === "JACK"
+    ) {
+      total += 10;
+    } else {
+      total += parseInt(cards[i].value);
+    }
   }
+  return total;
 }
 
 function displayCards() {
@@ -87,8 +93,7 @@ function displayCards() {
   $("#dealerCard1").attr("src", dealerCard1);
   $("#dealerCard2").attr("src", backOfCard);
 
-  updatePlayerCardsTotal(playerCards[0]);
-  updatePlayerCardsTotal(playerCards[1]);
+  playerCardsTotal = updateCardsTotal(playerCards, playerCardsTotal);
   // console.log("playerCardsTotal", playerCardsTotal);
   //update playerCardsTotal in HTML
   updatePlayerTotal();
@@ -101,6 +106,48 @@ function displayCards() {
   //   $("#dealerCard2").css("visibility", "hidden");
   //count up the value of the playersCards face cards each count as 10, aces 11 or 1, and 2 through 9 their values
 }
+
+function dealerLogic() {
+  //add up the value of the dealer's cards
+  //if dealerCardsTotal is less than 17, hit
+  // for (i = 3; i < dealerCards.length; i++) {
+  //   if (dealerCardsTotal < 17) {
+  //     $.ajax({
+  //       url: `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`,
+  //     }).then(
+  //       function (data) {
+  //         // console.log("all card data", data);
+  //         dealerCards.push(data.cards[0]);
+  //         dealerCardsTotal = updateCardsTotal(dealerCards, dealerCardsTotal);
+  //         //display the new card
+  //         //dynamic id for dealerCard3, dealerCard4, dealerCard5, dealerCard6, dealerCard7, dealerCard8, dealerCard9, dealerCard10
+  //         dealerCardsTotal = updateDealerTotal(dealerCards, dealerCardsTotal);
+  //         $("#dealer-cards-total").html(
+  //           `Dealer's Cards Total: ${dealerCardsTotal}`
+  //         );
+  //         if (dealerCardsTotal > 21) {
+  //           $("#dealer-cards-total").html(
+  //             `Dealer's Cards Total: ${dealerCardsTotal} - BUSTED!`
+  //           );
+  //         } else if (dealerCardsTotal === 21) {
+  //           $("#dealer-cards-total").html(
+  //             `Dealer's Cards Total: ${dealerCardsTotal} - BLACKJACK!`
+  //           );
+  //         }
+  //       },
+  //       (error) => {
+  //         console.log("dealer logic hit error", error);
+  //       }
+  //     );
+  //   }
+}
+
+//if dealerCardsTotal is greater than 17, stand
+//if dealerCardsTotal is greater than 21, bust
+//if dealerCardsTotal is equal to 21, blackjack
+//if dealerCardsTotal is greater than playerCardsTotal, dealer wins
+//if dealerCardsTotal is less than playerCardsTotal, player wins
+//if dealerCardsTotal is equal to playerCardsTotal, push
 
 function updatePlayerTotal() {
   $("#player-cards-total").html(`Player's Cards Total: ${playerCardsTotal}`);
@@ -156,25 +203,42 @@ $("#bet").click(function () {
   //change the value of bet and display it in the bet div
   //prompt player to enter a bet
   bet = prompt("How much would you like to bet?");
-  $("#bet").html(`Bet: $${bet}`);
-  //reduce the balance by the bet amount
-  balance -= bet;
-  //display the balance
-  $("#balance").html(`Balance: $${balance}`);
-});
+  if (isNaN(bet)) {
+    alert("Please enter a number");
 
-// $(document).ready(function () {
-$("#deal").click(function () {
-  if (bet === 0) {
-    alert("Please place a bet before you play");
     return;
   } else if (bet > balance) {
     alert("You don't have enough money to place that bet");
     return;
   }
   //bet is not a number
-  else if (isNaN(bet)) {
+  else if (bet === 0) {
+    alert("Please place a bet before you play");
+    return;
+  } else {
+    balance -= parseInt(bet);
+  }
+
+  $("#bet").html(`Bet: $${bet}`);
+  //reduce the balance by the bet amount
+
+  //display the balance
+  $("#balance").html(`Balance: $${balance}`);
+});
+
+// $(document).ready(function () {
+$("#deal").click(function () {
+  if (isNaN(bet)) {
     alert("Please enter a number");
+
+    return;
+  } else if (bet > balance) {
+    alert("You don't have enough money to place that bet");
+    return;
+  }
+  //bet is not a number
+  else if (bet === 0) {
+    alert("Please place a bet before you play");
     return;
   } else {
     // console.log("bet", bet);
@@ -191,9 +255,14 @@ $("#deal").click(function () {
   getDeck();
 });
 // });
+
 $("#stand").click(function () {
   //show the dealer's second card
   $("#dealerCard2").attr("src", localStorage.getItem("dealerCard2image"));
+
+  //show dealer's cards total
+  $("#dealer-cards-total").html(`Dealer's Cards: ${dealerCardsTotal}`);
+
   //disable the hit, double and stand buttons
   $("#hit").attr("disabled", true);
   $("#double").attr("disabled", true);

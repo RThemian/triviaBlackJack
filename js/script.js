@@ -3,6 +3,7 @@
 //import images from "./images/*.svg";
 
 //hide the hit, double and stand buttons until the player clicks the deal button
+
 $("#hit").hide();
 $("#double").hide();
 $("#stand").hide();
@@ -23,7 +24,7 @@ let dealerCard2 = ""; //this is the card that is face down
 
 function getDeck() {
   $.ajax({
-    url: "https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1",
+    url: "https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=5",
   }).then(
     function (data) {
       deckId = data.deck_id;
@@ -48,15 +49,18 @@ function getCards() {
       dealerCards = data.cards.slice(2, 4);
       //add up the value of the dealers two cards
       // dealerCardsTotal = 0;
-      updateCardsTotal(dealerCards, dealerCardsTotal);
-      console.log("dealerCardsTotal line 51: ", dealerCardsTotal);
+
+      //add up the value of the players two cards
+
       displayCards();
+      checkForBlackJack(dealerCards, playerCards);
     },
     (error) => {
       // console.log(error);
     }
   );
 }
+
 //create a function that will add up the value of the player's or dealer's cards
 
 function updateCardsTotal(cards, total) {
@@ -190,6 +194,9 @@ function dealerLogic() {
     } else if (dealerCardsTotal === playerCardsTotal) {
       //tie
       $("#message").html("PUSH");
+      //bet is added to balance
+      balance += parseInt(bet);
+      $("#balance").html(`Balance: $${balance}`);
       setTimeout(function () {
         $("#message").html("");
       }, 2000);
@@ -300,6 +307,12 @@ $("#bet").click(function () {
 
 // $(document).ready(function () {
 $("#deal").click(function () {
+  //bet must be placed before the deal button is clicked
+  if (bet === 0) {
+    alert("Please place a bet before you play");
+    return;
+  }
+
   clearOutHands();
 
   $("#deal").css("display", "none");
@@ -313,7 +326,6 @@ $("#deal").click(function () {
 
 $("#stand").click(function () {
   //show the dealer's second card
-  // debugger;
   $("#dealerCard2").attr("src", localStorage.getItem("dealerCard2image"));
   //display dealercard
   $("#dealerCard2").css("display", "block");
@@ -375,7 +387,8 @@ $("#hit").click(function () {
   let deckId = localStorage.getItem("deckId");
 
   // console.log("hit function deckId", deckId);
-
+  //disable the double button
+  $("#double").attr("disabled", true);
   $.ajax({
     url: `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`,
   }).then(
@@ -468,3 +481,174 @@ function clearOutHands() {
 
 //count card total function
 //function that updates playerCardsTotal with playerCards parameter
+
+// double button clicked, double bet
+// if (playerCard3.props("src") !== "") {
+//   $("#double").attr("disabled", true);
+// }
+
+//check if #playerCard3 has prop src
+//if it does, disable the double button
+if ($("#playerCard3").prop("src") !== "") {
+  $("#double").attr("disabled", true);
+}
+
+$("#double").click(function () {
+  //add bet to bet
+  console.log("playerCard3", playerCard3);
+  bet = bet * 2;
+  //update balance
+  balance = balance - bet;
+  $("#bet").html(`Bet: $${bet}`);
+  $("#balance").html(`Balance: $${balance}`);
+  //disable the hit, double and stand buttons
+  $("#hit").attr("disabled", true);
+  $("#double").attr("disabled", true);
+  $("#stand").attr("disabled", true);
+
+  let deckId = localStorage.getItem("deckId");
+
+  // console.log("hit function deckId", deckId);
+
+  $.ajax({
+    url: `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`,
+  }).then(
+    function (data) {
+      let playerCard3image = data.cards[0].image;
+      let playerCard3 = data.cards[0];
+
+      $(`#playerCard3`).attr("src", playerCard3image);
+      $(`#playerCard3`).css("display", "block");
+
+      playerCardsTotal = updateCardsTotal([playerCard3], playerCardsTotal);
+
+      updatePlayerTotal();
+      console.log("playerCardsTotal from 3 card", playerCardsTotal);
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+  //show the dealer's second card
+  $("#dealerCard2").attr("src", localStorage.getItem("dealerCard2image"));
+  //display dealercard
+  $("#dealerCard2").css("display", "block");
+
+  //show dealer's cards total
+  dealerCardsTotal = updateCardsTotal(dealerCards, (dealerCardsTotal = 0));
+  $("#dealer-cards-total").html(`Dealer's Cards: ${dealerCardsTotal}`);
+
+  //disable the hit, double and stand buttons
+  $("#hit").attr("disabled", true);
+  $("#double").attr("disabled", true);
+  $("#stand").attr("disabled", true);
+
+  //check if dealerCardsTotal is greater than 17
+  if (dealerCardsTotal >= 17 && dealerCardsTotal > playerCardsTotal) {
+    //dealer wins
+    $("#message").html("Dealer Wins!");
+    setTimeout(function () {
+      $("#message").html("");
+    }, 3000);
+
+    setTimeout(function () {
+      gameReset();
+    }, 5000);
+  } else if (dealerCardsTotal >= 17 && dealerCardsTotal < playerCardsTotal) {
+    //player wins
+    $("#message").html("Player Wins!");
+    console.log("balance before adding bet", balance);
+    balance += parseInt(bet * 2);
+    $("#balance").html(`Balance: $${balance}`);
+    console.log("balance after adding bet && $DOM update", balance);
+    setTimeout(function () {
+      $("#message").html("");
+    }, 3000);
+
+    setTimeout(function () {
+      gameReset();
+    }, 5000);
+  } else if (dealerCardsTotal >= 17 && dealerCardsTotal === playerCardsTotal) {
+    //tie
+    $("#message").html("Tie!");
+    setTimeout(function () {
+      $("#message").html("");
+    }, 3000);
+
+    setTimeout(function () {
+      gameReset();
+    }, 5000);
+  } else {
+    //dealerCardsTotal is less than 17
+
+    dealerLogic();
+  }
+});
+
+function checkForBlackJack(dealerCards, playerCards) {
+  dealerCardsTotal = updateCardsTotal(dealerCards, 0);
+  playerCardsTotal = updateCardsTotal(playerCards, 0);
+
+  //check if dealer and / or player has blackjack
+  if (dealerCardsTotal === 21 && playerCardsTotal === 21) {
+    //show dealercard2
+    $("#dealerCard2").attr("src", localStorage.getItem("dealerCard2image"));
+    //display dealercard
+    $("#dealerCard2").css("display", "block");
+    //it's a PUSH
+    $("#message").html("It's a PUSH");
+    setTimeout(function () {
+      $("#message").html("");
+    }, 2000);
+    //reset the game 2 seconds after the message is displayed
+    setTimeout(function () {
+      gameReset();
+    }, 3000);
+  } else if (dealerCardsTotal === 21 && playerCardsTotal !== 21) {
+    //show dealercard2
+    $("#dealerCard2").attr("src", localStorage.getItem("dealerCard2image"));
+    //display dealercard
+    $("#dealerCard2").css("display", "block");
+    //dealer wins
+    $("#message").html("Dealer has Blackjack");
+    setTimeout(function () {
+      $("#message").html("Dealer wins");
+      //bet is subtracted from balance
+      console.log("balance before subtracting bet", balance);
+      balance -= parseInt(bet);
+      console.log("balance after subtracting bet", balance);
+    }, 2000);
+    setTimeout(function () {
+      $("#message").html("");
+    }, 4000);
+    //reset the game 4 seconds after the message is displayed
+    setTimeout(function () {
+      gameReset();
+    }, 5000);
+  } else if (dealerCardsTotal !== 21 && playerCardsTotal === 21) {
+    //show dealercard2
+    $("#dealerCard2").attr("src", localStorage.getItem("dealerCard2image"));
+    //display dealercard
+    $("#dealerCard2").css("display", "block");
+
+    //player wins
+    $("#message").html("Player has Blackjack");
+    setTimeout(function () {
+      $("#message").html("Player wins");
+      //bet is added to balance
+      console.log("balance before adding bet", balance);
+      balance += parseInt(bet * 1.5);
+      console.log("balance after adding bet", balance);
+    }, 2000);
+    setTimeout(function () {
+      $("#message").html("");
+    }, 4000);
+    //reset the game 4 seconds after the message is displayed
+    setTimeout(function () {
+      gameReset();
+    }, 5000);
+  } else {
+    //no one has blackjack
+    return;
+  }
+}

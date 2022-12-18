@@ -66,10 +66,14 @@ function getCards() {
 function updateCardsTotal(cards, total) {
   for (let i = 0; i < cards.length; i++) {
     if (cards[i].value === "ACE") {
-      total += 11;
-      if (total > 21) {
-        total -= 10;
+      //reduce the value of the ace to 1 if the total is greater than 21
+
+      if (total + 11 > 21) {
+        total += 1;
+        continue;
+        //continue will skip the rest of the code in the loop and go to the next iteration
       }
+      total += 11;
     } else if (
       cards[i].value === "KING" ||
       cards[i].value === "QUEEN" ||
@@ -108,36 +112,35 @@ function displayCards() {
   //update playerCardsTotal in HTML
   updatePlayerTotal();
 
-  //check if player has blackjack
-  if (playerCardsTotal === 21) {
-    //player wins
-    $("#message").html("Player has Blackjack");
-    setTimeout(function () {
-      $("#message").html("Player wins");
-      //bet is added to balance
-      console.log("balance before adding bet", balance);
-      balance += parseInt(bet * 2);
-      console.log("balance after adding bet", balance);
-
-      $("#balance").html(`Balance: $${balance}`);
-    }, 2000);
-    setTimeout(function () {
-      $("#message").html("");
-    }, 4000);
-    //reset the game 4 seconds after the message is displayed
-    setTimeout(function () {
-      gameReset();
-    }, 5000);
-  }
-
   $("#playerCard1").css("display", "block");
   $("#playerCard2").css("display", "block");
   $("#dealerCard1").css("display", "block");
   $("#dealerCard2").css("display", "block");
-
-  //   $("#dealerCard2").css("visibility", "hidden");
-  //count up the value of the playersCards face cards each count as 10, aces 11 or 1, and 2 through 9 their values
 }
+
+//check if player has blackjack
+// if (playerCardsTotal === 21) {
+//   //player wins
+//   $("#message").html("Player has Blackjack");
+//   setTimeout(function () {
+//     $("#message").html("Player wins");
+//     //bet is added to balance
+//     console.log("balance before adding bet", balance);
+//     balance += parseInt(bet * 2);
+//     console.log("balance after adding bet", balance);
+
+//     $("#balance").html(`Balance: $${balance}`);
+//   }, 2000);
+//   setTimeout(function () {
+//     $("#message").html("");
+//   }, 4000);
+//   //reset the game 4 seconds after the message is displayed
+//   setTimeout(function () {
+//     gameReset();
+//   }, 5000);
+
+//   $("#dealerCard2").css("visibility", "hidden");
+//count up the value of the playersCards face cards each count as 10, aces 11 or 1, and 2 through 9 their values
 
 function dealerLogic() {
   //display dealerCardsTotal
@@ -149,27 +152,25 @@ function dealerLogic() {
   if (dealerCardsTotal > 21) {
     //player wins
     $("#message").html("Dealer busts");
-
+    balance += parseInt(bet * 2);
+    $("#balance").html(`Balance: $${balance}`);
     setTimeout(function () {
       $("#message").html("Player wins");
-      console.log("balance before adding bet", balance);
-      balance += parseInt(bet * 2);
-      console.log("balance after adding bet", balance);
-      $("#balance").html(`Balance: $${balance}`);
     }, 2000);
 
     setTimeout(function () {
       $("#message").html("");
-    }, 4000);
+    }, 3000);
     //reset the game 4 seconds after the message is displayed
     setTimeout(function () {
       gameReset();
-    }, 5000);
+    }, 4000);
   } else if (dealerCardsTotal <= 21 && dealerCardsTotal >= 17) {
     //check if dealerCardsTotal is greater than playerCardsTotal
     if (dealerCardsTotal > playerCardsTotal) {
       //dealer wins
       $("#message").html("Dealer wins");
+
       setTimeout(function () {
         $("#message").html("");
       }, 2000);
@@ -283,11 +284,12 @@ $("#bet").click(function () {
   //change the value of bet and display it in the bet div
   //prompt player to enter a bet
   bet = prompt("How much would you like to bet?");
-  if (isNaN(bet)) {
+  while (isNaN(bet)) {
     alert("Please enter a number");
 
     return;
-  } else if (bet > balance) {
+  }
+  if (bet > balance) {
     alert("You don't have enough money to place that bet");
     return;
   }
@@ -308,7 +310,7 @@ $("#bet").click(function () {
 // $(document).ready(function () {
 $("#deal").click(function () {
   //bet must be placed before the deal button is clicked
-  if (bet === 0) {
+  if (bet === 0 || bet != parseInt(bet)) {
     alert("Please place a bet before you play");
     return;
   }
@@ -316,6 +318,8 @@ $("#deal").click(function () {
   clearOutHands();
 
   $("#deal").css("display", "none");
+  //disable bet button
+  $("#bet").attr("disabled", true);
   $("#hit").show();
   $("#double").show();
   $("#stand").show();
@@ -366,7 +370,8 @@ $("#stand").click(function () {
     }, 5000);
   } else if (dealerCardsTotal >= 17 && dealerCardsTotal === playerCardsTotal) {
     //tie
-    $("#message").html("Tie!");
+    $("#message").html("It's a PUSH!");
+    balance += parseInt(bet);
     setTimeout(function () {
       $("#message").html("");
     }, 3000);
@@ -436,8 +441,11 @@ function gameReset() {
   dealerCardsTotal = 0;
   playerCardsTotal = 0;
   $("#player-cards-total").html(`Player's Cards Total: ${playerCardsTotal}`);
+  //bet button disabled false
+  $("#bet").attr("disabled", false);
   //display the deal button
   $("#deal").show();
+
   //hide the hit, double and stand buttons
   $("#hit").hide();
   $("#double").hide();
@@ -496,9 +504,10 @@ if ($("#playerCard3").prop("src") !== "") {
 $("#double").click(function () {
   //add bet to bet
   console.log("playerCard3", playerCard3);
-  bet = bet * 2;
+
   //update balance
   balance = balance - bet;
+  bet = parseInt(bet * 2);
   $("#bet").html(`Bet: $${bet}`);
   $("#balance").html(`Balance: $${balance}`);
   //disable the hit, double and stand buttons
@@ -547,6 +556,9 @@ $("#double").click(function () {
   if (dealerCardsTotal >= 17 && dealerCardsTotal > playerCardsTotal) {
     //dealer wins
     $("#message").html("Dealer Wins!");
+    //reduce balance by bet
+    balance -= parseInt(bet);
+    $("#balance").html(`Balance: $${balance}`);
     setTimeout(function () {
       $("#message").html("");
     }, 3000);
@@ -558,7 +570,7 @@ $("#double").click(function () {
     //player wins
     $("#message").html("Player Wins!");
     console.log("balance before adding bet", balance);
-    balance += parseInt(bet * 2);
+    balance += parseInt(bet);
     $("#balance").html(`Balance: $${balance}`);
     console.log("balance after adding bet && $DOM update", balance);
     setTimeout(function () {
@@ -570,7 +582,9 @@ $("#double").click(function () {
     }, 5000);
   } else if (dealerCardsTotal >= 17 && dealerCardsTotal === playerCardsTotal) {
     //tie
-    $("#message").html("Tie!");
+    $("#message").html("PUSH!");
+    balance += parseInt(bet);
+    $("#balance").html(`Balance: $${balance}`);
     setTimeout(function () {
       $("#message").html("");
     }, 3000);
@@ -597,6 +611,9 @@ function checkForBlackJack(dealerCards, playerCards) {
     $("#dealerCard2").css("display", "block");
     //it's a PUSH
     $("#message").html("It's a PUSH");
+    //restore balance
+    balance += parseInt(bet);
+    $("#balance").html(`Balance: $${balance}`);
     setTimeout(function () {
       $("#message").html("");
     }, 2000);
@@ -636,9 +653,10 @@ function checkForBlackJack(dealerCards, playerCards) {
     setTimeout(function () {
       $("#message").html("Player wins");
       //bet is added to balance
-      console.log("balance before adding bet", balance);
-      balance += parseInt(bet * 1.5);
-      console.log("balance after adding bet", balance);
+      //multiply bet by 1.5 and round to the nearest integer
+      bet = Math.round(bet * 1.5);
+      balance += bet;
+      console.log(balance);
     }, 2000);
     setTimeout(function () {
       $("#message").html("");

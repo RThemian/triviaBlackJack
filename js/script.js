@@ -1,6 +1,143 @@
-//use AJAX to get the two cards for computer dealer and two cards for player and display them. Use the deckOfCards API. Display the SVG images of the cards. Put the computer dealer cards one face down and one face up. Put the player cards face up. Put the computer dealer cards on the top of the body page and the player's cards on the bottom.
+//this class will hold all the game logic after initial deal
 
-//import images from "./images/*.svg";
+class gameObject {
+  constructor(playerCardsTotal, dealerCardsTotal, balance, bet) {
+    this.playerCardsTotal = playerCardsTotal;
+    this.dealerCardsTotal = dealerCardsTotal;
+    this.balance = balance;
+    this.bet = bet;
+  }
+
+  checkForBlackJack(playerCardsTotal, dealerCardsTotal) {
+    if (playerCardsTotal === 21) {
+      //player wins
+      $("#message").html("Player has Blackjack");
+      setTimeout(function () {
+        $("#message").html("Player wins");
+        //bet is added to balance
+        console.log("balance before adding bet", balance);
+        balance += parseInt(bet * 2);
+        console.log("balance after adding bet", balance);
+
+        $("#balance").html(`Balance: $${balance}`);
+      }, 2000);
+      setTimeout(function () {
+        $("#message").html("");
+      }, 4000);
+      //reset the game 4 seconds after the message is displayed
+      setTimeout(function () {
+        gameReset();
+      }, 5000);
+
+      $("#dealerCard2").css("visibility", "hidden");
+    } else if (dealerCardsTotal === 21) {
+      //dealer wins
+      $("#message").html("Dealer has Blackjack");
+      setTimeout(function () {
+        $("#message").html("Dealer wins");
+      }, 2000);
+      setTimeout(function () {
+        $("#message").html("");
+      }, 4000);
+      //reset the game 4 seconds after the message is displayed
+      setTimeout(function () {
+        gameReset();
+      }, 5000);
+    }
+  }
+  checkForWinner(playerCardsTotal, dealerCardsTotal) {
+    if (playerCardsTotal > 21) {
+      //player loses
+      $("#message").html("Player BUSTS! Dealer Wins!!");
+      setTimeout(function () {
+        $("#message").html("");
+      }, 2000);
+      //reset the game 4 seconds after the message is displayed
+      setTimeout(function () {
+        gameReset();
+      }, 3000);
+    } else if (dealerCardsTotal > 21) {
+      //dealer loses
+      $("#message").html("Dealer BUSTS! Player Wins!!");
+      setTimeout(function () {
+        $("#message").html("");
+      }, 2000);
+      //reset the game 4 seconds after the message is displayed
+      setTimeout(function () {
+        gameReset();
+      }, 3000);
+    } else if (playerCardsTotal > dealerCardsTotal) {
+      //player wins
+      $("#message").html("Player wins!");
+      setTimeout(function () {
+        $("#message").html("");
+      }, 2000);
+      //reset the game 4 seconds after the message is displayed
+      setTimeout(function () {
+        gameReset();
+      }, 3000);
+    } else if (playerCardsTotal < dealerCardsTotal) {
+      //dealer wins
+      $("#message").html("Dealer wins!");
+      setTimeout(function () {
+        $("#message").html("");
+      }, 2000);
+      //reset the game 4 seconds after the message is displayed
+      setTimeout(function () {
+        gameReset();
+      }, 3000);
+    } else if (playerCardsTotal === dealerCardsTotal) {
+      //tie
+      $("#message").html("Tie");
+      setTimeout(function () {
+        $("#message").html("");
+      }, 2000);
+      //reset the game 4 seconds after the message is displayed
+      setTimeout(function () {
+        gameReset();
+      }, 3000);
+    }
+  }
+  //this function will handle bet and balance values when player wins
+  playerWins() {
+    //bet is added to balance
+    console.log("balance before adding bet", balance);
+    balance += parseInt(bet * 2);
+    console.log("balance after adding bet", balance);
+
+    $("#balance").html(`Balance: $${balance}`);
+  }
+  //function handles when player gets blackjack
+  playerBlackJack() {
+    // 150% of the bet is added to balance
+    console.log("balance before adding bet", balance);
+    balance += parseInt(bet * 2.5);
+    console.log("balance after adding bet", balance);
+    $("#balance").html(`Balance: $${balance}`);
+  }
+
+  //this function will reset the game
+  gameReset() {
+    //reset the game
+    $("#playerCard1").attr("src", backOfCard);
+    $("#playerCard2").attr("src", backOfCard);
+    $("#dealerCard1").attr("src", backOfCard);
+    $("#dealerCard2").attr("src", backOfCard);
+    $("#dealerCard2").css("visibility", "visible");
+    $("#hit").hide();
+    $("#double").hide();
+    $("#stand").hide();
+    $("#deal").show();
+    $("#balance").html(`Balance: $${balance}`);
+    $("#bet").html(`Bet: $${bet}`);
+    playerCardsTotal = 0;
+    dealerCardsTotal = 0;
+    bet = 0;
+    getDeck();
+  }
+}
+
+//use AJAX to get the two cards for computer dealer and two cards for player and display them. Use the deckOfCards API. Display the SVG images of the cards. Put the computer dealer cards one face down and one face up. Put the player cards face up. Put the computer dealer cards on the top of the body page and the player's cards on the bottom.
 
 //hide the hit, double and stand buttons until the player clicks the deal button
 

@@ -1,7 +1,5 @@
 //use AJAX to get the two cards for computer dealer and two cards for player and display them. Use the deckOfCards API. Display the SVG images of the cards. Put the computer dealer cards one face down and one face up. Put the player cards face up. Put the computer dealer cards on the top of the body page and the player's cards on the bottom.
 
-//import images from "./images/*.svg";
-
 //hide the hit, double and stand buttons until the player clicks the deal button
 
 $("#hit").hide();
@@ -64,15 +62,13 @@ function getCards() {
 //create a function that will add up the value of the player's or dealer's cards
 
 function updateCardsTotal(cards, total) {
+  let numOfAces = 0;
+
   for (let i = 0; i < cards.length; i++) {
     if (cards[i].value === "ACE") {
       //reduce the value of the ace to 1 if the total is greater than 21
 
-      if (total + 11 > 21) {
-        total += 1;
-        continue;
-        //continue will skip the rest of the code in the loop and go to the next iteration
-      }
+      numOfAces++;
       total += 11;
     } else if (
       cards[i].value === "KING" ||
@@ -85,6 +81,14 @@ function updateCardsTotal(cards, total) {
     }
   }
   console.log("total", total);
+
+  //check if total is greater than 21
+  // if the score is over 21 and we have Aces, try changing their value to 1
+  while (total > 21 && numOfAces > 0) {
+    total -= 10;
+    numOfAces--;
+  }
+
   return total;
 }
 
@@ -299,6 +303,8 @@ $("#bet").click(function () {
     return;
   } else if (bet > 0) {
     balance -= parseInt(bet);
+    //disable the bet button
+    $("#bet").attr("disabled", true);
   }
 
   $("#bet").html(`Bet: $${bet}`);
@@ -401,28 +407,31 @@ $("#hit").click(function () {
       if ($("#playerCard3").attr("src") === "") {
         let playerCard3image = data.cards[0].image;
         let playerCard3 = data.cards[0];
+        playerCards.push(playerCard3);
 
         $(`#playerCard3`).attr("src", playerCard3image);
         $(`#playerCard3`).css("display", "block");
 
-        playerCardsTotal = updateCardsTotal([playerCard3], playerCardsTotal);
+        playerCardsTotal = updateCardsTotal(playerCards, 0);
 
         updatePlayerTotal();
         console.log("playerCardsTotal from 3", playerCardsTotal);
       } else if ($("#playerCard4").attr("src") === "") {
         let playerCard4image = data.cards[0].image;
         let playerCard4 = data.cards[0];
+        playerCards.push(playerCard4);
         $(`#playerCard4`).attr("src", playerCard4image);
         $(`#playerCard4`).css("display", "block");
-        playerCardsTotal = updateCardsTotal([playerCard4], playerCardsTotal);
+        playerCardsTotal = updateCardsTotal(playerCards, 0);
         updatePlayerTotal();
         console.log("playerCardsTotal from 4", playerCardsTotal);
       } else if ($("#playerCard5").attr("src") === "") {
         let playerCard5image = data.cards[0].image;
         let playerCard5 = data.cards[0];
+        playerCards.push(playerCard5);
         $(`#playerCard5`).attr("src", playerCard5image);
         $(`#playerCard5`).css("display", "block");
-        playerCardsTotal = updateCardsTotal([playerCard5], playerCardsTotal);
+        playerCardsTotal = updateCardsTotal(playerCards, 0);
         updatePlayerTotal();
         console.log("playerCardsTotal from 5", playerCardsTotal);
       } else {

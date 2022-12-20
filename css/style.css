@@ -5,7 +5,16 @@ html {
 
 body {
   height: 50vh;
-  background-color: lightcyan;
+  /* put bg-blackJack as background */
+  background-image: url("./../images/bg-blackJack.jpg");
+  background-size: cover;
+}
+
+#message,
+#player-cards-total,
+#dealer-cards-total {
+  /* change color of text to white */
+  color: aliceblue;
 }
 
 /* player's hand  styling*/

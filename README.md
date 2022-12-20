@@ -12,5 +12,3 @@
 
 \**Game End:
 *If you run out of money, the game is over.
-
-<!-- how to insert photos in README.MD   -->

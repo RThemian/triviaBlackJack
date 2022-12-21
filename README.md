@@ -11,6 +11,8 @@
 **4. DeckOfCards API
 \*\*5. BootStrap 5.0
 
+<!-- insert screen shot  -->
+
 \**Game Instructions:
 *Black Jack App: the player receives two cards from the deckOfCards API. The player can choose to hit or stand. If the player chooses to hit, the player will receive another card from the deckOfCards API. If the player chooses to stand, the player will be presented with the dealer's cards. If the player has a higher card value than the dealer, the player will win the black jack round and the money earned on the black jack round. If the player has a lower card value than the dealer, the player will lose the black jack round and the money earned on the black jack round. If the player has the same card value as the dealer, the player will tie the black jack round and the money earned on the black jack round will be returned to the bank.
 
@@ -19,3 +21,8 @@
 
 \**Game End:
 *If you run out of money, the game is over.
+
+\**Future Plans:
+*1. Add a card counter trainer to the game.
+*2. Use database to create analysis of card count vs. probability of winning based on past wins and losses
+*3. Use an imported database from a bigger data set to give the probability of winning with the card count and data set

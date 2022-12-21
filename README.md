@@ -11,7 +11,15 @@
 **4. DeckOfCards API
 \*\*5. BootStrap 5.0
 
-<!-- insert screen shot  -->
+\**Screenshots
+*Start
+![image](https://user-images.githubusercontent.com/62709684/208791869-9e5f9144-f739-43bd-9fc9-6ce120ff384f.png)
+
+\*MidGame
+![image](https://user-images.githubusercontent.com/62709684/208791979-f228d332-3de0-4cc6-b928-b80a3668d39f.png)
+
+\*EndGame
+![image](https://user-images.githubusercontent.com/62709684/208792211-c6c82f8f-2acd-4ebe-9236-92326771bfc4.png)
 
 \**Game Instructions:
 *Black Jack App: the player receives two cards from the deckOfCards API. The player can choose to hit or stand. If the player chooses to hit, the player will receive another card from the deckOfCards API. If the player chooses to stand, the player will be presented with the dealer's cards. If the player has a higher card value than the dealer, the player will win the black jack round and the money earned on the black jack round. If the player has a lower card value than the dealer, the player will lose the black jack round and the money earned on the black jack round. If the player has the same card value as the dealer, the player will tie the black jack round and the money earned on the black jack round will be returned to the bank.

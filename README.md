@@ -4,6 +4,13 @@
 
 ##Instructions:
 
+##Technologies used:
+**1. JavaScript
+**2. HTML
+**3. CSS
+**4. DeckOfCards API
+\*\*5. BootStrap 5.0
+
 \**Game Instructions:
 *Black Jack App: the player receives two cards from the deckOfCards API. The player can choose to hit or stand. If the player chooses to hit, the player will receive another card from the deckOfCards API. If the player chooses to stand, the player will be presented with the dealer's cards. If the player has a higher card value than the dealer, the player will win the black jack round and the money earned on the black jack round. If the player has a lower card value than the dealer, the player will lose the black jack round and the money earned on the black jack round. If the player has the same card value as the dealer, the player will tie the black jack round and the money earned on the black jack round will be returned to the bank.
 

@@ -32,7 +32,7 @@ function getDeck() {
       getCards();
     },
     (error) => {
-      // console.log(error);
+      console.log(error);
     }
   );
 }
@@ -54,7 +54,7 @@ function getCards() {
       checkForBlackJack(dealerCards, playerCards);
     },
     (error) => {
-      // console.log(error);
+      console.log(error);
     }
   );
 }
@@ -121,30 +121,6 @@ function displayCards() {
   $("#dealerCard1").css("display", "block");
   $("#dealerCard2").css("display", "block");
 }
-
-//check if player has blackjack
-// if (playerCardsTotal === 21) {
-//   //player wins
-//   $("#message").html("Player has Blackjack");
-//   setTimeout(function () {
-//     $("#message").html("Player wins");
-//     //bet is added to balance
-//     console.log("balance before adding bet", balance);
-//     balance += parseInt(bet * 2);
-//     console.log("balance after adding bet", balance);
-
-//     $("#balance").html(`Balance: $${balance}`);
-//   }, 2000);
-//   setTimeout(function () {
-//     $("#message").html("");
-//   }, 4000);
-//   //reset the game 4 seconds after the message is displayed
-//   setTimeout(function () {
-//     gameReset();
-//   }, 5000);
-
-//   $("#dealerCard2").css("visibility", "hidden");
-//count up the value of the playersCards face cards each count as 10, aces 11 or 1, and 2 through 9 their values
 
 function dealerLogic() {
   //display dealerCardsTotal

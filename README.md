@@ -30,6 +30,9 @@
 \**Game End:
 *If you run out of money, the game is over.
 
+\*\*Link to the deployed game:
+https://blackjack-tomas-paul-c.netlify.app/
+
 \**Future Plans:
 *1. Add a card counter trainer to the game.
 *2. Use database to create analysis of card count vs. probability of winning based on past wins and losses

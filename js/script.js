@@ -1,6 +1,4 @@
-//use AJAX to get the two cards for computer dealer and two cards for player and display them. Use the deckOfCards API. Display the SVG images of the cards. Put the computer dealer cards one face down and one face up. Put the player cards face up. Put the computer dealer cards on the top of the body page and the player's cards on the bottom.
 
-//hide the hit, double and stand buttons until the player clicks the deal button
 
 $("#hit").hide();
 $("#double").hide();
@@ -59,14 +57,14 @@ function getCards() {
   );
 }
 
-//create a function that will add up the value of the player's or dealer's cards
+//function that will add up the value of the player's or dealer's cards
 
 function updateCardsTotal(cards, total) {
   let numOfAces = 0;
 
   for (let i = 0; i < cards.length; i++) {
     if (cards[i].value === "ACE") {
-      //reduce the value of the ace to 1 if the total is greater than 21
+      
 
       numOfAces++;
       total += 11;
@@ -168,7 +166,7 @@ function dealerLogic() {
       setTimeout(function () {
         $("#message").html("");
       }, 2000);
-      //reset the game 4 seconds after the message is displayed
+     
       setTimeout(function () {
         gameReset();
       }, 3000);

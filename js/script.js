@@ -610,9 +610,8 @@ function checkForBlackJack(dealerCards, playerCards) {
     setTimeout(function () {
       $("#message").html("Dealer wins");
       //bet is subtracted from balance
-      console.log("balance before subtracting bet", balance);
+
       balance -= parseInt(bet);
-      console.log("balance after subtracting bet", balance);
     }, 2000);
     setTimeout(function () {
       $("#message").html("");
@@ -633,8 +632,8 @@ function checkForBlackJack(dealerCards, playerCards) {
       $("#message").html("Player wins");
       //bet is added to balance
       //multiply bet by 1.5 and round to the nearest integer
-      bet = Math.round(bet * 1.5);
-      balance += bet;
+      bet = Math.round(bet * 2.5);
+      balance += parseInt(bet);
       console.log(balance);
     }, 2000);
     setTimeout(function () {

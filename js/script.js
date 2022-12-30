@@ -1,5 +1,3 @@
-
-
 $("#hit").hide();
 $("#double").hide();
 $("#stand").hide();
@@ -64,8 +62,6 @@ function updateCardsTotal(cards, total) {
 
   for (let i = 0; i < cards.length; i++) {
     if (cards[i].value === "ACE") {
-      
-
       numOfAces++;
       total += 11;
     } else if (
@@ -166,7 +162,7 @@ function dealerLogic() {
       setTimeout(function () {
         $("#message").html("");
       }, 2000);
-     
+
       setTimeout(function () {
         gameReset();
       }, 3000);

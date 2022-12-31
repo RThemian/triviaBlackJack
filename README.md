@@ -1,8 +1,8 @@
 #Project-1: BlackJack App: Deck of Cards: https://www.deckofcardsapi.com/
 
-##Overview: jQuery, JavaScript, HTML, CSS, Bootstrap, Open Trivia DB API
+##Overview: jQuery, JavaScript, HTML, CSS, Bootstrap, Deck of Cards API
 
-##Instructions:
+###GAME: Learn count cards and play black jack
 
 ##Technologies used:
 **1. JavaScript

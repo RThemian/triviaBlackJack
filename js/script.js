@@ -253,41 +253,74 @@ function updatePlayerTotal() {
   }
 }
 
-//on click  set bet up to the available balance
-$("#bet").click(function () {
+function checkBet(event) {
   //change the value of bet and display it in the bet div
   //prompt player to enter a bet
-  bet = prompt("How much would you like to bet?");
-  while (isNaN(bet)) {
-    alert("Please enter a number");
+  // bet = prompt("How much would you like to bet?");
 
-    return;
-  }
+  bet = $("#bet-input").val();
+  //update balance
+
+  //set bet
+  $("#bet").html(`Bet: $${bet}`);
   if (bet > balance) {
-    alert("You don't have enough money to place that bet");
-    return;
+    $("#not-enough-money").html(
+      `$${balance} is your max bet. Please place a lower bet.`
+    );
+    setTimeout(function () {
+      $("#not-enough-money").html("");
+      //set bet back to 0
+      bet = 0;
+      $("#bet").html(`Bet: $${bet}`);
+      //set input field back to 0
+      $("#bet-input").val("");
+    }, 2000);
+    event.preventDefault();
+    return false;
   }
   //bet is not a number
-  else if (bet === 0) {
-    alert("Please place a bet before you play");
-    return;
+  else if (bet === 0 || bet === "" || bet === null) {
+    $("#not-enough-money").html("Please place a bet before you play");
+    setTimeout(function () {
+      $("#not-enough-money").html("");
+    }, 2000);
+    event.preventDefault();
+    return false;
   } else if (bet > 0) {
     balance -= parseInt(bet);
+    //display new balance
+    $("#balance").html(`Balance: $${balance}`);
     //disable the bet button
     $("#bet").attr("disabled", true);
+    //disable input field
+    $("#bet-input").attr("disabled", true);
+    event.preventDefault();
+    return false;
   }
 
   $("#bet").html(`Bet: $${bet}`);
 
   //display the balance
   $("#balance").html(`Balance: $${balance}`);
-});
 
+  event.preventDefault();
+  return false;
+}
+
+//on click  set bet up to the available balance
+$("#bet").click((event) => {
+  checkBet(event);
+});
 // $(document).ready(function () {
 $("#deal").click(function () {
   //bet must be placed before the deal button is clicked
   if (bet === 0 || bet != parseInt(bet)) {
-    alert("Please place a bet before you play");
+    //make red warning h4 message appear
+    $("#no-bet-alert").html("Please place a bet before you play");
+    setTimeout(() => {
+      $("#no-bet-alert").html("");
+    }, 2000);
+
     return;
   }
 
@@ -422,6 +455,7 @@ function gameReset() {
   $("#player-cards-total").html(`Player's Cards Total: ${playerCardsTotal}`);
   //bet button disabled false
   $("#bet").attr("disabled", false);
+  $("#bet-input").attr("disabled", false);
   //display the deal button
   $("#deal").show();
 
@@ -628,12 +662,13 @@ function checkForBlackJack(dealerCards, playerCards) {
 
     //player wins
     $("#message").html("Player has Blackjack");
+
     setTimeout(function () {
       $("#message").html("Player wins");
       //bet is added to balance
       //multiply bet by 1.5 and round to the nearest integer
-      bet = Math.round(bet * 2.5);
-      balance += parseInt(bet);
+      balance += parseInt(Math.round(bet * 2.5));
+      $("#balance").html(`Balance: $${balance}`);
       console.log(balance);
     }, 2000);
     setTimeout(function () {

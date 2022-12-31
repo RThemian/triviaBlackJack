@@ -41,12 +41,12 @@
       <br>
       <div class="row mt-4">
         <div class="col-12">
-          <div class="row">
+          <div class="row d-flex align-items-center justify-content-center">
             <div class="col-3 ">
               <button id="deal" class="btn btn-lg btn-dark col-md-12 fs-2 display-3 fw-bolder">Deal</button>
               <div id="no-bet-alert" class = "text-danger fs-5"></div>
             </div>
-            <div class="col-3">
+            <div class="col-3 d-flex justify-content-center">
               <h2 id="balance" class = "btn btn-lg text-white fs-1 display-3 fw-bolder">Balance</h2>
             </div>
             <div class="col-3">
@@ -58,7 +58,7 @@
 
               <form onsubmit="return checkBet(event)" class = "form">
                 <input type="number" class="form-control fs-1 mb-2" placeholder="Bet" id = "bet-input">
-                <button id="bet" type="button" class="btn btn-lg btn-primary fs-2 display-3 fw-bolder w-100" >Place Bet</button>
+                <button id="bet" type="button" class="btn btn-lg btn-danger fs-2 display-3 fw-bolder w-100" >Place Bet</button>
               </form>
             </div>
           </div>

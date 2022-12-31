@@ -25,8 +25,8 @@
 <body>
   <!-- nav  -->
   <!-- put BlackJack in nav bar -->
-  <div class="container-fluid">
-    <nav class="navbar navbar-expand-lg navbar-light bg-primary">
+  <div  class="container-fluid">
+    <nav id ="nav-top" class="navbar navbar-expand-lg navbar-light bg-primary">
 
       <!-- center Black Jack Title -->
       <div class="container-fluid d-flex justify-content-center text-white">
@@ -36,13 +36,11 @@
     </nav>
     <div class="container">
 
-      <br>
-      <br>
-      <br>
-      <div class="row mt-4">
+      
+      <div id ="top-buttons" class="row mt-4">
         <div class="col-12">
           <div class="row d-flex align-items-center justify-content-center">
-            <div class="col-3 ">
+            <div class="col-3">
               <button id="deal" class="btn btn-lg btn-dark col-md-12 fs-2 display-3 fw-bolder">Deal</button>
               <div id="no-bet-alert" class = "text-danger fs-5"></div>
             </div>
@@ -77,20 +75,23 @@
               <!-- put both img in a row -->
               <div class="row">
                 <div id="dealer-card-1" class="col-1">
-                  <img id="dealerCard1" style="height: 250px;" class = "border-0" />
+                  <img id="dealerCard1" class = "border-0" />
                 </div>
                 <div id="dealer-card-2" class="col-1">
-                  <img id="dealerCard2" style="height: 250px;" class = "border-0"/>
+                  <img id="dealerCard2" class = "border-0"/>
                 </div>
                 <div id="dealer-card-3" class="col-1">
-                  <img id="dealerCard3" style="height: 250px;" class = "border-0" />
+                  <img id="dealerCard3" class = "border-0" />
                 </div>
                 <div id="dealer-card-4" class="col-1">
-                  <img id="dealerCard4" style="height: 250px;" class = "border-0" />
+                  <img id="dealerCard4" class = "border-0" />
                 </div>
                 <div id="dealer-card-5" class="col-1">
-                  <img id="dealerCard5" style="height: 250px;" class = "border-0" />
+                  <img id="dealerCard5" class = "border-0" />
                 </div>
+                <div id="dealer-card-6" class="col-1">
+                  <img id="dealerCard6" class = "border-0" />
+
               </div>
 
           </div>
@@ -107,30 +108,34 @@
             <!-- put both img in a row -->
             <div class="row border-0">
               <div class="col-1 border-0">
-                <img id="playerCard1" style="height: 250px;" class = "border-0"/>
+                <img id="playerCard1" class = "border-0"/>
               </div>
               <div  class="col-1 border-0">
-                <img id="playerCard2" style="height: 250px;" class = "border-0" />
+                <img id="playerCard2" class = "border-0" />
               </div>
               <div  class="col-1 border-0">
-                <img id="playerCard3" style="height: 250px;" class = "border-0" />
+                <img id="playerCard3" class = "border-0" />
               </div>
               <div class="col-1 border-0">
-                <img id="playerCard4" style="height: 250px;" class = "border-0" />
+                <img id="playerCard4" class = "border-0" />
               </div>
               <div class="col-1 border-0">
-                <img id="playerCard5" style="height: 250px;" class = "border-0" />
+                <img id="playerCard5" class = "border-0" />
               </div>
+              <div  class="col-1 border-0">
+                <img id="playerCard6" class = "border-0" />
+              </div>
+            
 
             </div>
           </div>
         </div>
 
         <div class="row">
-          <div class="col-12">
-            <div class="row m-4">
-              <div class="col-md-4 px-3">
-                <button id="hit" class="btn btn-lg btn-warning col-10 fs-2 m-1 display-3 fw-bolder">Hit</button>
+          <div id = "container-toggle" class="col-12">
+            <div id ="row-toggle" class="row m-4">
+              <div id = "column-toggle" class="col-md-4 px-3">
+                <button id="hit" class="btn btn-lg btn-warning col-10 fs-2 m-1 display-3 fw-bolder">Hit </button>
               </div>
               <div class="col-md-4 px-3">
                 <button id="double" class="btn btn-lg btn-dark col-10 fs-2 m-1 display-3 fw-bolder">Double </button>

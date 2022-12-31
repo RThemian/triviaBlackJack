@@ -162,7 +162,8 @@ function dealerLogic() {
       setTimeout(function () {
         $("#message").html("");
       }, 2000);
-
+      //how many rem per px for the card images
+      // 1rem = 16px
       setTimeout(function () {
         gameReset();
       }, 3000);
@@ -210,6 +211,15 @@ function dealerLogic() {
 
         dealerCards.push(dealerCard5);
         dealerLogic();
+      } else if ($("#dealerCard6").attr("src") === "") {
+        let dealerCard6image = data.cards[0].image;
+        let dealerCard6 = data.cards[0];
+
+        $(`#dealerCard6`).attr("src", dealerCard5image);
+        $(`#dealerCard6`).css("display", "block");
+
+        dealerCards.push(dealerCard6);
+        dealerLogic();
       }
     });
   }
@@ -228,10 +238,10 @@ function updateDealerTotal() {
     console.log("balance after adding bet && $DOM update", balance);
     setTimeout(function () {
       $("#message").html("");
-    }, 5000);
+    }, 3000);
     setTimeout(function () {
       gameReset();
-    }, 7000);
+    }, 4000);
   }
 }
 
@@ -381,6 +391,8 @@ $("#stand").click(function () {
     //tie
     $("#message").html("It's a PUSH!");
     balance += parseInt(bet);
+    //update the balance
+    $("#balance").html(`Balance: $${balance}`);
     setTimeout(function () {
       $("#message").html("");
     }, 3000);
@@ -437,8 +449,15 @@ $("#hit").click(function () {
         playerCardsTotal = updateCardsTotal(playerCards, 0);
         updatePlayerTotal();
         console.log("playerCardsTotal from 5", playerCardsTotal);
-      } else {
-        alert("You have 5 cards and cannot hit");
+      } else if ($("#playerCard6").attr("src") === "") {
+        let playerCard6image = data.cards[0].image;
+        let playerCard6 = data.cards[0];
+        playerCards.push(playerCard6);
+        $(`#playerCard6`).attr("src", playerCard6image);
+        $(`#playerCard6`).css("display", "block");
+        playerCardsTotal = updateCardsTotal(playerCards, 0);
+        updatePlayerTotal();
+        console.log("playerCardsTotal from 6", playerCardsTotal);
       }
     },
     (error) => {

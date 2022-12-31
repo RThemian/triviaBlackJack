@@ -20,3 +20,18 @@ body {
   /* change color of text to white */
   color: aliceblue;
 }
+img {
+  /* 250px = rem */
+
+  height: 35rem;
+}
+/* for mobile screens add a media query that reduces height of cards to 8rem */
+@media screen and (max-width: 600px) {
+  img {
+    height: 20rem;
+  }
+  /* remove blackJack nav */
+  #nav-top {
+    display: none;
+  }
+}

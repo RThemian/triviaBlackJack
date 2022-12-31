@@ -3,6 +3,10 @@ html {
   font-size: 62.5%;
 }
 
+div {
+  border: none;
+}
+
 body {
   height: 50vh;
   /* put bg-blackJack as background */

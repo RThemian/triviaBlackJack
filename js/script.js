@@ -488,16 +488,33 @@ function gameReset() {
 }
 function clearOutHands() {
   $("#playerCard1").attr("src", "");
+  //remove playerCard1 display
+  $("#playerCard1").css("display", "none");
   $("#playerCard2").attr("src", "");
+  //remove playerCard2 display
+  $("#playerCard2").css("display", "none");
   $("#playerCard3").attr("src", "");
+  //remove playerCard3 display
+  $("#playerCard3").css("display", "none");
   $("#playerCard4").attr("src", "");
+  //remove playerCard4 display
+  $("#playerCard4").css("display", "none");
   $("#playerCard5").attr("src", "");
-
+  //remove playerCard5 display
+  $("#playerCard5").css("display", "none");
   $("#dealerCard1").attr("src", "");
+  //remove dealerCard1 display
+  $("#dealerCard1").css("display", "none");
   $("#dealerCard2").attr("src", "");
+  //remove dealerCard2 display
+  $("#dealerCard2").css("display", "none");
+
   $("#dealerCard3").attr("src", "");
+  $("#dealerCard3").css("display", "none");
   $("#dealerCard4").attr("src", "");
+  $("#dealerCard4").css("display", "none");
   $("#dealerCard5").attr("src", "");
+  $("#dealerCard5").css("display", "none");
 }
 
 //count card total function

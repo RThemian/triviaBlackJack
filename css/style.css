@@ -36,20 +36,20 @@ img {
   }
   #hit {
     position: absolute;
-    top: 20rem;
-    left: 32rem;
+    top: 12rem;
+    left: 20rem;
     width: 15rem;
-    opacity: 0.5;
+    opacity: 0.7;
   }
   #hit:hover {
     opacity: 1;
   }
   #stand {
     position: absolute;
-    top: 25rem;
-    left: 32rem;
+    top: 17rem;
+    left: 20rem;
     width: 15rem;
-    opacity: 0.5;
+    opacity: 0.7;
   }
   /* #stand on hover */
   #stand:hover {
@@ -57,10 +57,10 @@ img {
   }
   #double {
     position: absolute;
-    top: 30rem;
-    left: 32rem;
+    top: 22rem;
+    left: 20rem;
     width: 15rem;
-    opacity: 0.5;
+    opacity: 0.7;
   }
   /* #double on hover */
   #double:hover {

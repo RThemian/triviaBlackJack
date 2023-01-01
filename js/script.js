@@ -472,12 +472,36 @@ function gameReset() {
   //reset the bet to 0
   bet = 0;
   $("#bet").html(`Bet: $${bet}`);
+  //reset the bet input to null
+  $("#bet-input").val("");
 
   if (balance <= 0) {
-    alert("You have no more money. Game Over!");
-    balance = 1000;
-    $("#balance").html(`Balance: $${balance}`);
-    gameReset();
+    //add message to DOM
+    $("#message").html("You have no more money. Game Over!");
+    //change sytle of message to red text
+    $("#message").css("color", "red");
+    //change background color of message to aliceblue
+    $("#message").css("background-color", "aliceblue");
+    setTimeout(function () {
+      //remove message background color
+      $("#message").css("background-color", "");
+      //remove message text
+      $("#message").html("");
+      //change message to a button that says play again with gameReset() on click
+
+      $("#message-btn")
+        .html(
+          `<button class = "btn btn-warning btn-lg w-75 h-auto fw-bolder" id="play-again">Play Again</button>`
+        )
+        .on("click", function () {
+          balance = 1000;
+          $("#balance").html(`Balance: $${balance}`);
+          //remove the play again button
+          $("#message-btn").html("");
+
+          gameReset();
+        });
+    }, 2000);
   }
 }
 function clearOutHands() {
@@ -549,11 +573,13 @@ $("#double").click(function () {
     function (data) {
       let playerCard3image = data.cards[0].image;
       let playerCard3 = data.cards[0];
+      //push into playerCards array
+      playerCards.push(playerCard3);
 
       $(`#playerCard3`).attr("src", playerCard3image);
       $(`#playerCard3`).css("display", "block");
 
-      playerCardsTotal = updateCardsTotal([playerCard3], playerCardsTotal);
+      playerCardsTotal = updateCardsTotal(playerCards, 0);
 
       updatePlayerTotal();
       console.log("playerCardsTotal from 3 card", playerCardsTotal);

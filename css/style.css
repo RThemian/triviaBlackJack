@@ -67,3 +67,10 @@ img {
     opacity: 1;
   }
 }
+
+#play-again {
+  height: 15rem;
+  min-height: 15rem;
+  font-size: 100px;
+  color: aliceblue;
+}

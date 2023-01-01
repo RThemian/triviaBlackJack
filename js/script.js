@@ -735,3 +735,6 @@ function startGame(event) {
 
   getDeck();
 }
+
+//make new branch in git
+//git checkout -b new-branch-name

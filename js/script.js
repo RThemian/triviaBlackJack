@@ -289,7 +289,7 @@ function checkBet(event) {
     return false;
   }
   //bet is not a number
-  else if (bet === 0 || bet === "" || bet === null) {
+  else if (bet <= 0 || bet === "" || bet === null) {
     $("#not-enough-money").html("Please place a bet before you play");
     setTimeout(function () {
       $("#not-enough-money").html("");
@@ -305,7 +305,7 @@ function checkBet(event) {
     //disable input field
     $("#bet-input").attr("disabled", true);
     event.preventDefault();
-    return false;
+    return true;
   }
 
   $("#bet").html(`Bet: $${bet}`);
@@ -315,18 +315,6 @@ function checkBet(event) {
 
   event.preventDefault();
   return false;
-}
-
-function startGame(event) {
-  checkBet(event);
-  clearOutHands();
-
-  $("#bet").attr("disabled", true);
-  $("#hit").show();
-  $("#double").show();
-  $("#stand").show();
-
-  getDeck();
 }
 
 //on click  set bet up to the available balance
@@ -705,4 +693,19 @@ function checkForBlackJack(dealerCards, playerCards) {
     //no one has blackjack
     return;
   }
+}
+
+function startGame(event) {
+  // checkBet(event);
+  if (!checkBet(event)) {
+    return;
+  }
+  clearOutHands();
+
+  $("#bet").attr("disabled", true);
+  $("#hit").show();
+  $("#double").show();
+  $("#stand").show();
+
+  getDeck();
 }

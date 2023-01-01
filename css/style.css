@@ -23,15 +23,47 @@ body {
 img {
   /* 250px = rem */
 
-  height: 35rem;
+  height: 30rem;
 }
 /* for mobile screens add a media query that reduces height of cards to 8rem */
 @media screen and (max-width: 600px) {
   img {
-    height: 20rem;
+    height: 18rem;
   }
   /* remove blackJack nav */
   #nav-top {
     display: none;
+  }
+  #hit {
+    position: absolute;
+    top: 20rem;
+    left: 32rem;
+    width: 15rem;
+    opacity: 0.5;
+  }
+  #hit:hover {
+    opacity: 1;
+  }
+  #stand {
+    position: absolute;
+    top: 25rem;
+    left: 32rem;
+    width: 15rem;
+    opacity: 0.5;
+  }
+  /* #stand on hover */
+  #stand:hover {
+    opacity: 1;
+  }
+  #double {
+    position: absolute;
+    top: 30rem;
+    left: 32rem;
+    width: 15rem;
+    opacity: 0.5;
+  }
+  /* #double on hover */
+  #double:hover {
+    opacity: 1;
   }
 }

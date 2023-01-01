@@ -317,35 +317,22 @@ function checkBet(event) {
   return false;
 }
 
-//on click  set bet up to the available balance
-$("#bet").click((event) => {
+function startGame(event) {
   checkBet(event);
-});
-// $(document).ready(function () {
-$("#deal").click(function () {
-  //bet must be placed before the deal button is clicked
-  if (bet === 0 || bet != parseInt(bet)) {
-    //make red warning h4 message appear
-    $("#no-bet-alert").html("Please place a bet before you play");
-    setTimeout(() => {
-      $("#no-bet-alert").html("");
-    }, 2000);
-
-    return;
-  }
-
   clearOutHands();
 
-  $("#deal").css("display", "none");
-  //disable bet button
   $("#bet").attr("disabled", true);
   $("#hit").show();
   $("#double").show();
   $("#stand").show();
 
   getDeck();
+}
+
+//on click  set bet up to the available balance
+$("#bet").click((event) => {
+  startGame(event);
 });
-// });
 
 $("#stand").click(function () {
   //show the dealer's second card
